@@ -211,6 +211,7 @@
                     </view>
                     <connections>
                         <outlet property="actionBtn" destination="AbN-t8-Dca" id="u6K-Sj-L9K"/>
+                        <outlet property="mapView" destination="Dr9-C5-2lK" id="2jd-qs-ypk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
