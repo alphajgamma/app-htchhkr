@@ -21,6 +21,7 @@
 		A1E588A71F793E7100D7762C /* LeftSidePanelVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E588A61F793E7100D7762C /* LeftSidePanelVC.swift */; };
 		A1E588A91F79424700D7762C /* ContainerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E588A81F79424700D7762C /* ContainerVC.swift */; };
 		A1E588AC1F795F6F00D7762C /* CenterVCDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E588AB1F795F6F00D7762C /* CenterVCDelegate.swift */; };
+		A1FD20CA1F799E3900B08277 /* UIViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FD20C91F799E3900B08277 /* UIViewExt.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		A1E588A61F793E7100D7762C /* LeftSidePanelVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftSidePanelVC.swift; sourceTree = "<group>"; };
 		A1E588A81F79424700D7762C /* ContainerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerVC.swift; sourceTree = "<group>"; };
 		A1E588AB1F795F6F00D7762C /* CenterVCDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterVCDelegate.swift; sourceTree = "<group>"; };
+		A1FD20C91F799E3900B08277 /* UIViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 		A11FD4D71F7902B6008ADBE0 /* htchhkr */ = {
 			isa = PBXGroup;
 			children = (
+				A1FD20C81F799DDE00B08277 /* Extensions */,
 				A1E588AA1F795F6000D7762C /* Protocols */,
 				A1E5889B1F792EB700D7762C /* Model */,
 				A1E5889A1F792EB300D7762C /* View */,
@@ -142,6 +145,14 @@
 				A1E588AB1F795F6F00D7762C /* CenterVCDelegate.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		A1FD20C81F799DDE00B08277 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A1FD20C91F799E3900B08277 /* UIViewExt.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -272,6 +283,7 @@
 				A1E588A71F793E7100D7762C /* LeftSidePanelVC.swift in Sources */,
 				A1E588A31F79339500D7762C /* CircleView.swift in Sources */,
 				A1E588A91F79424700D7762C /* ContainerVC.swift in Sources */,
+				A1FD20CA1F799E3900B08277 /* UIViewExt.swift in Sources */,
 				A11FD4DB1F7902B6008ADBE0 /* HomeVC.swift in Sources */,
 				A1E5889F1F79319D00D7762C /* RoundImageView.swift in Sources */,
 				A1E588A11F7932A800D7762C /* RoundedShadowView.swift in Sources */,
