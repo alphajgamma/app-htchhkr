@@ -24,6 +24,7 @@
 		A1FD20CA1F799E3900B08277 /* UIViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FD20C91F799E3900B08277 /* UIViewExt.swift */; };
 		A1FD20CC1F79A67A00B08277 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FD20CB1F79A67A00B08277 /* LoginVC.swift */; };
 		A1FD20CE1F79A75900B08277 /* RoundedCornerTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FD20CD1F79A75900B08277 /* RoundedCornerTextField.swift */; };
+		A1FD20D01F79B42900B08277 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A1FD20CF1F79B42400B08277 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		A1FD20C91F799E3900B08277 /* UIViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExt.swift; sourceTree = "<group>"; };
 		A1FD20CB1F79A67A00B08277 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		A1FD20CD1F79A75900B08277 /* RoundedCornerTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCornerTextField.swift; sourceTree = "<group>"; };
+		A1FD20CF1F79B42400B08277 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 				A11FD4DF1F7902B6008ADBE0 /* Assets.xcassets */,
 				A11FD4E11F7902B6008ADBE0 /* LaunchScreen.storyboard */,
 				A11FD4E41F7902B6008ADBE0 /* Info.plist */,
+				A1FD20CF1F79B42400B08277 /* GoogleService-Info.plist */,
 			);
 			path = htchhkr;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A11FD4E31F7902B6008ADBE0 /* LaunchScreen.storyboard in Resources */,
+				A1FD20D01F79B42900B08277 /* GoogleService-Info.plist in Resources */,
 				A11FD4E01F7902B6008ADBE0 /* Assets.xcassets in Resources */,
 				A11FD4DE1F7902B6008ADBE0 /* Main.storyboard in Resources */,
 			);
