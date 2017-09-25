@@ -25,6 +25,7 @@
 		A1FD20CC1F79A67A00B08277 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FD20CB1F79A67A00B08277 /* LoginVC.swift */; };
 		A1FD20CE1F79A75900B08277 /* RoundedCornerTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FD20CD1F79A75900B08277 /* RoundedCornerTextField.swift */; };
 		A1FD20D01F79B42900B08277 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A1FD20CF1F79B42400B08277 /* GoogleService-Info.plist */; };
+		A1FD20D31F79B4E300B08277 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FD20D21F79B4E300B08277 /* DataService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		A1FD20CB1F79A67A00B08277 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		A1FD20CD1F79A75900B08277 /* RoundedCornerTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCornerTextField.swift; sourceTree = "<group>"; };
 		A1FD20CF1F79B42400B08277 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A1FD20D21F79B4E300B08277 /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 		A11FD4D71F7902B6008ADBE0 /* htchhkr */ = {
 			isa = PBXGroup;
 			children = (
+				A1FD20D11F79B4D600B08277 /* Services */,
 				A1FD20C81F799DDE00B08277 /* Extensions */,
 				A1E588AA1F795F6000D7762C /* Protocols */,
 				A1E5889B1F792EB700D7762C /* Model */,
@@ -162,6 +165,14 @@
 				A1FD20C91F799E3900B08277 /* UIViewExt.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A1FD20D11F79B4D600B08277 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A1FD20D21F79B4E300B08277 /* DataService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,6 +300,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1E588AC1F795F6F00D7762C /* CenterVCDelegate.swift in Sources */,
+				A1FD20D31F79B4E300B08277 /* DataService.swift in Sources */,
 				A1E588A51F7934C900D7762C /* RoundedShadowButton.swift in Sources */,
 				A1FD20CC1F79A67A00B08277 /* LoginVC.swift in Sources */,
 				A1E588A71F793E7100D7762C /* LeftSidePanelVC.swift in Sources */,
