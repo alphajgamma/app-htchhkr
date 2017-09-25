@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  HomeVC.swift
 //  htchhkr
 //
 //  Created by Andrew Greenough on 25/09/2017.
@@ -8,7 +8,11 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class HomeVC: UIViewController {
+    
+    // Outlets
+    @IBOutlet weak var actionBtn: RoundedShadowButton!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +23,11 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
+    
+    @IBAction func actionBtnWasPressed(_ sender: Any) {
+        actionBtn.animateButton(shouldLoad: true, withMessage: nil)
+    }
+    
+    
 }
 
