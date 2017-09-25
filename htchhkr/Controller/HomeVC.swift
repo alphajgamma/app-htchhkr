@@ -13,6 +13,8 @@ class HomeVC: UIViewController {
     // Outlets
     @IBOutlet weak var actionBtn: RoundedShadowButton!
     
+    // Variables
+    var delegate: CenterVCDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +30,9 @@ class HomeVC: UIViewController {
         actionBtn.animateButton(shouldLoad: true, withMessage: nil)
     }
     
+    @IBAction func menuBtnWasPressed(_ sender: Any) {
+        delegate?.toggleLeftPanel()
+    }
     
 }
 
