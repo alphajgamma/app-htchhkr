@@ -22,6 +22,7 @@
 		A1E588A91F79424700D7762C /* ContainerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E588A81F79424700D7762C /* ContainerVC.swift */; };
 		A1E588AC1F795F6F00D7762C /* CenterVCDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E588AB1F795F6F00D7762C /* CenterVCDelegate.swift */; };
 		A1FD20CA1F799E3900B08277 /* UIViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FD20C91F799E3900B08277 /* UIViewExt.swift */; };
+		A1FD20CC1F79A67A00B08277 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FD20CB1F79A67A00B08277 /* LoginVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		A1E588A81F79424700D7762C /* ContainerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerVC.swift; sourceTree = "<group>"; };
 		A1E588AB1F795F6F00D7762C /* CenterVCDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterVCDelegate.swift; sourceTree = "<group>"; };
 		A1FD20C91F799E3900B08277 /* UIViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExt.swift; sourceTree = "<group>"; };
+		A1FD20CB1F79A67A00B08277 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 				A11FD4DA1F7902B6008ADBE0 /* HomeVC.swift */,
 				A1E588A61F793E7100D7762C /* LeftSidePanelVC.swift */,
 				A1E588A81F79424700D7762C /* ContainerVC.swift */,
+				A1FD20CB1F79A67A00B08277 /* LoginVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -280,6 +283,7 @@
 			files = (
 				A1E588AC1F795F6F00D7762C /* CenterVCDelegate.swift in Sources */,
 				A1E588A51F7934C900D7762C /* RoundedShadowButton.swift in Sources */,
+				A1FD20CC1F79A67A00B08277 /* LoginVC.swift in Sources */,
 				A1E588A71F793E7100D7762C /* LeftSidePanelVC.swift in Sources */,
 				A1E588A31F79339500D7762C /* CircleView.swift in Sources */,
 				A1E588A91F79424700D7762C /* ContainerVC.swift in Sources */,
