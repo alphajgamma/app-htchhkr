@@ -80,6 +80,9 @@
                                     <constraint firstAttribute="width" constant="60" id="eMW-SR-mvK"/>
                                 </constraints>
                                 <state key="normal" image="centerMapBtn"/>
+                                <connections>
+                                    <action selector="centerMapBtnWasPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YoT-e6-1fZ"/>
+                                </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TmN-6r-du1" customClass="RoundedShadowView" customModule="htchhkr" customModuleProvider="target">
                                 <rect key="frame" x="16" y="72" width="382" height="80"/>
