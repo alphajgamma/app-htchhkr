@@ -59,7 +59,9 @@ class RoundedShadowButton: UIButton {
             
             UIView.animate(withDuration: 0.2, animations: {
                 self.layer.cornerRadius = 5.0
+                
                 self.frame = self.originalSize!
+                
                 self.setTitle(message, for: .normal)
             })
         }

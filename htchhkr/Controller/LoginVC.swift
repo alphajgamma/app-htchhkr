@@ -73,4 +73,9 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             }
         }
     }
+    
+    @IBAction func cancelBtnWasPressed(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
 }
