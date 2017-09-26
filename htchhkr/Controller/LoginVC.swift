@@ -64,17 +64,10 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                             }
                         }
                     } else {
-                        if let user = user {
-                            if self.segmentedControl.selectedSegmentIndex == 0 {
-                                let userData = ["provider" : user.providerID] as [String : Any]
-                                DataService.instance.createFirebaseDBUser(uid: user.uid, userData: userData, isDriver: false)
-                            } else {
-                                let userData = ["provider" : user.providerID, "userIsDriver" : true, "isPickupModeEnabled" : false, "driverIsOnTrip" : false] as [String : Any]
-                                DataService.instance.createFirebaseDBUser(uid: user.uid, userData: userData, isDriver: true)
-                            }
+                        if user != nil {
+                            print("Email user authenticated successfully in Firebase")
+                            self.dismiss(animated: true, completion: nil)
                         }
-                        print("Email user authenticated successfully in Firebase")
-                        self.dismiss(animated: true, completion: nil)
                     }
                 })
             }

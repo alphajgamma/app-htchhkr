@@ -31,8 +31,8 @@ class LeftSidePanelVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        observePassengersAndDrivers()
         resetView()
+        observePassengersAndDrivers()
     }
     
     func resetView(){
