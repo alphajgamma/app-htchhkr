@@ -24,6 +24,7 @@ class HomeVC: UIViewController {
     // Variables
     var delegate: CenterVCDelegate?
     var manager: CLLocationManager?
+    var currentUserId: String?
     let regionRadius: CLLocationDistance = 1000
     var tableView = UITableView()
     var matchingItems = [MKMapItem]()
@@ -50,6 +51,9 @@ class HomeVC: UIViewController {
         revealingSplashView.animationType = .heartBeat
         revealingSplashView.startAnimation()
         revealingSplashView.heartAttack = true
+        
+        
+        currentUserId = Auth.auth().currentUser?.uid
     }
     
     func checkLocationAuthStatus() {
@@ -152,6 +156,12 @@ extension HomeVC: MKMapViewDelegate {
             view = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             view.image = UIImage(named: "driverAnnotation")
             return view
+        } else if let annotation = annotation as? PassengerAnnotation {
+            let identifier = "passenger"
+            var view: MKAnnotationView
+            view = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            view.image = UIImage(named: "currentLocationAnnotation")
+            return view
         }
         return nil
     }
@@ -179,7 +189,6 @@ extension HomeVC: MKMapViewDelegate {
                             self.matchingItems.append(mapItem)
                         }
                         self.tableView.reloadData()
-                        self.animateTableView(shouldShow: true)
                     }
                 }
             }
@@ -202,6 +211,7 @@ extension HomeVC: UITextFieldDelegate {
             tableView.rowHeight = 80
             
             view.addSubview(tableView)
+            animateTableView(shouldShow: true)
             
             UIView.animate(withDuration: 0.2, animations: {
                 self.destinationCircle.backgroundColor = UIColor.red
@@ -224,16 +234,16 @@ extension HomeVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == destinationTxtField {
             performSearch()
-            textField.endEditing(true)
+            view.endEditing(true)
         }
         return true
     }
     
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        centerMapOnUserLocation()
         matchingItems = []
         tableView.reloadData()
-        animateTableView(shouldShow: false)
+        
+        centerMapOnUserLocation()
         return true
     }
     
@@ -274,7 +284,22 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let passengerCoordinate = manager?.location?.coordinate
+        let passengerAnnotation = PassengerAnnotation(coordinate: passengerCoordinate!, withKey: currentUserId!)
+        mapView.addAnnotation(passengerAnnotation)
+        destinationTxtField.text = tableView.cellForRow(at: indexPath)?.textLabel?.text
+        let selectedMapItem = matchingItems[indexPath.row]
+        DataService.instance.REF_USERS.child(currentUserId!).updateChildValues(["tripCoordinate" : [selectedMapItem.placemark.coordinate.latitude, selectedMapItem.placemark.coordinate.longitude]])
         animateTableView(shouldShow: false)
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        view.endEditing(true)
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        if destinationTxtField.text == "" {
+            animateTableView(shouldShow: false)
+        }
+    }
 }
