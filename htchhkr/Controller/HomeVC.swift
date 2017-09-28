@@ -26,6 +26,7 @@ class HomeVC: UIViewController {
     var manager: CLLocationManager?
     let regionRadius: CLLocationDistance = 1000
     var tableView = UITableView()
+    var matchingItems = [MKMapItem]()
     
     let revealingSplashView = RevealingSplashView(iconImage: UIImage(named: "launchScreenIcon")!, iconInitialSize: CGSize(width: 80, height: 80), backgroundColor: UIColor.white)
 
@@ -159,6 +160,32 @@ extension HomeVC: MKMapViewDelegate {
         centerMapBtn.fadeTo(alphaValue: 1.0, withDuration: 0.2)
     }
     
+    func performSearch() {
+        matchingItems.removeAll()
+        let request = MKLocalSearchRequest()
+        request.naturalLanguageQuery = destinationTxtField.text
+        request.region = mapView.region
+        
+        let search = MKLocalSearch(request: request)
+        search.start { (response, error) in
+            if let error = error {
+                AlertService.instance.displayAlert(fromViewController: self, withTitle: "Error searching", andMessage: error.localizedDescription)
+            } else {
+                if response?.mapItems.count == 0 {
+                    AlertService.instance.displayAlert(fromViewController: self, withTitle: "No Results", andMessage: "There were no results for your search")
+                } else {
+                    if let mapItems = response?.mapItems {
+                        for mapItem in mapItems {
+                            self.matchingItems.append(mapItem)
+                        }
+                        self.tableView.reloadData()
+                        self.animateTableView(shouldShow: true)
+                    }
+                }
+            }
+        }
+    }
+    
 }
 extension HomeVC: UITextFieldDelegate {
     
@@ -175,7 +202,6 @@ extension HomeVC: UITextFieldDelegate {
             tableView.rowHeight = 80
             
             view.addSubview(tableView)
-            animateTableView(shouldShow: true)
             
             UIView.animate(withDuration: 0.2, animations: {
                 self.destinationCircle.backgroundColor = UIColor.red
@@ -197,7 +223,7 @@ extension HomeVC: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == destinationTxtField {
-            // performSearch
+            performSearch()
             textField.endEditing(true)
         }
         return true
@@ -205,6 +231,9 @@ extension HomeVC: UITextFieldDelegate {
     
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         centerMapOnUserLocation()
+        matchingItems = []
+        tableView.reloadData()
+        animateTableView(shouldShow: false)
         return true
     }
     
@@ -233,11 +262,15 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return matchingItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "locationCell")
+        let mapItem = matchingItems[indexPath.row]
+        cell.textLabel?.text = mapItem.name
+        cell.detailTextLabel?.text = mapItem.placemark.title
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
