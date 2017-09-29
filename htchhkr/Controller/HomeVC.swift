@@ -12,7 +12,7 @@ import CoreLocation
 import RevealingSplashView
 import Firebase
 
-class HomeVC: UIViewController {
+class HomeVC: UIViewController, Alertable {
     
     // Outlets
     @IBOutlet weak var mapView: MKMapView!
@@ -208,10 +208,10 @@ extension HomeVC: MKMapViewDelegate {
         let search = MKLocalSearch(request: request)
         search.start { (response, error) in
             if let error = error {
-                self.displayAlert(withTitle: "Error searching", andMessage: error.localizedDescription)
+                self.showAlert(withTitle: "Error searching", andMessage: error.localizedDescription)
             } else {
                 if response?.mapItems.count == 0 {
-                    self.displayAlert(withTitle: "No Results", andMessage: "There were no results for your search")
+                    self.showAlert(withTitle: "No Results", andMessage: "There were no results for your search, please try again.")
                 } else {
                     if let mapItems = response?.mapItems {
                         for mapItem in mapItems {

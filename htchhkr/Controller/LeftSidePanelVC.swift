@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class LeftSidePanelVC: UIViewController {
+class LeftSidePanelVC: UIViewController, Alertable {
     
     let appDelegate = AppDelegate.getAppDelegate()
     let currentUserId = Auth.auth().currentUser?.uid
@@ -106,7 +106,7 @@ class LeftSidePanelVC: UIViewController {
                 try Auth.auth().signOut()
                 resetView()
             } catch (let error) {
-                displayAlert(withTitle: "Sign Out Error", andMessage: error.localizedDescription)
+                showAlert(withTitle: "Sign Out Error", andMessage: error.localizedDescription)
             }
         }
     }

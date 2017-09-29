@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class LoginVC: UIViewController, UITextFieldDelegate {
+class LoginVC: UIViewController, UITextFieldDelegate, Alertable {
     
     // Outlets
     @IBOutlet weak var emailTxtField: RoundedCornerTextField!
@@ -44,7 +44,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                             case .userNotFound:
                                 Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
                                     if let error = error {
-                                        self.displayAlert(withTitle: "Authentication Error", andMessage: error.localizedDescription)
+                                        self.showAlert(withTitle: "Authentication Error", andMessage: error.localizedDescription)
                                     } else {
                                         if let user = user {
                                             if self.segmentedControl.selectedSegmentIndex == 0 {
@@ -60,7 +60,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                                     }
                                 })
                             default:
-                                self.displayAlert(withTitle: "Authentication Error", andMessage: error.localizedDescription)
+                                self.showAlert(withTitle: "Authentication Error", andMessage: error.localizedDescription)
                             }
                         }
                     } else {
