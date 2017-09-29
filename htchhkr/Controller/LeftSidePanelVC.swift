@@ -38,8 +38,6 @@ class LeftSidePanelVC: UIViewController, Alertable {
     func resetView(){
         if Auth.auth().currentUser == nil {
             pickupModeSwitch.isOn = false
-            pickupModeSwitch.isHidden = true
-            pickupModeLbl.isHidden = true
             userEmailLbl.text = ""
             UserAccountTypeLbl.text = ""
             userImageView.isHidden = true
@@ -49,6 +47,13 @@ class LeftSidePanelVC: UIViewController, Alertable {
             UserAccountTypeLbl.text = ""
             userImageView.isHidden = false
             loginOutBtn.setTitle("Logout", for: .normal)
+        }
+        if self.UserAccountTypeLbl.text == "PASSENGER" {
+            pickupModeSwitch.isHidden = true
+            pickupModeLbl.isHidden = true
+        } else {
+            pickupModeSwitch.isHidden = false
+            pickupModeLbl.isHidden = false
         }
     }
     
