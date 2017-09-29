@@ -198,16 +198,17 @@ extension HomeVC: MKMapViewDelegate {
         let search = MKLocalSearch(request: request)
         search.start { (response, error) in
             if let error = error {
-                AlertService.instance.displayAlert(fromViewController: self, withTitle: "Error searching", andMessage: error.localizedDescription)
+                self.displayAlert(withTitle: "Error searching", andMessage: error.localizedDescription)
             } else {
                 if response?.mapItems.count == 0 {
-                    AlertService.instance.displayAlert(fromViewController: self, withTitle: "No Results", andMessage: "There were no results for your search")
+                    self.displayAlert(withTitle: "No Results", andMessage: "There were no results for your search")
                 } else {
                     if let mapItems = response?.mapItems {
                         for mapItem in mapItems {
                             self.matchingItems.append(mapItem)
                         }
                         self.tableView.reloadData()
+                        self.shouldPresentLoadingView(false)
                     }
                 }
             }
@@ -241,6 +242,7 @@ extension HomeVC: MKMapViewDelegate {
             }
             self.route = response.routes.first
             self.mapView.add(self.route.polyline)
+            self.shouldPresentLoadingView(false)
         }
     }
 }
@@ -281,6 +283,7 @@ extension HomeVC: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == destinationTxtField {
+            shouldPresentLoadingView(true)
             performSearch()
             view.endEditing(true)
         }
@@ -332,6 +335,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        shouldPresentLoadingView(true)
         let passengerCoordinate = manager?.location?.coordinate
         let passengerAnnotation = PassengerAnnotation(coordinate: passengerCoordinate!, withKey: currentUserId!)
         mapView.addAnnotation(passengerAnnotation)

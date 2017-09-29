@@ -106,7 +106,7 @@ class LeftSidePanelVC: UIViewController {
                 try Auth.auth().signOut()
                 resetView()
             } catch (let error) {
-                AlertService.instance.displayAlert(fromViewController: self, withTitle: "Sign Out Error", andMessage: error.localizedDescription)
+                displayAlert(withTitle: "Sign Out Error", andMessage: error.localizedDescription)
             }
         }
     }

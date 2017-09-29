@@ -44,7 +44,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                             case .userNotFound:
                                 Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
                                     if let error = error {
-                                        AlertService.instance.displayAlert(fromViewController: self, withTitle: "Authentication Error", andMessage: error.localizedDescription)
+                                        self.displayAlert(withTitle: "Authentication Error", andMessage: error.localizedDescription)
                                     } else {
                                         if let user = user {
                                             if self.segmentedControl.selectedSegmentIndex == 0 {
@@ -60,7 +60,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                                     }
                                 })
                             default:
-                                AlertService.instance.displayAlert(fromViewController: self, withTitle: "Authentication Error", andMessage: error.localizedDescription)
+                                self.displayAlert(withTitle: "Authentication Error", andMessage: error.localizedDescription)
                             }
                         }
                     } else {
