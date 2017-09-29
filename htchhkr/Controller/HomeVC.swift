@@ -28,6 +28,7 @@ class HomeVC: UIViewController {
     let regionRadius: CLLocationDistance = 1000
     var tableView = UITableView()
     var matchingItems = [MKMapItem]()
+    var route: MKRoute!
     var selectedItemPlacemark: MKPlacemark? = nil
     
     let revealingSplashView = RevealingSplashView(iconImage: UIImage(named: "launchScreenIcon")!, iconInitialSize: CGSize(width: 80, height: 80), backgroundColor: UIColor.white)
@@ -181,6 +182,13 @@ extension HomeVC: MKMapViewDelegate {
         centerMapBtn.fadeTo(alphaValue: 1.0, withDuration: 0.2)
     }
     
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let lineRenderer = MKPolylineRenderer(overlay: route.polyline)
+        lineRenderer.strokeColor = #colorLiteral(red: 0.884881556, green: 0.3655636609, blue: 0.1510630548, alpha: 1)
+        lineRenderer.lineWidth = 3
+        return lineRenderer
+    }
+    
     func performSearch() {
         matchingItems.removeAll()
         let request = MKLocalSearchRequest()
@@ -218,6 +226,22 @@ extension HomeVC: MKMapViewDelegate {
         let annotation = MKPointAnnotation()
         annotation.coordinate = placemark.coordinate
         mapView.addAnnotation(annotation)
+    }
+    
+    func searchMapKitForResultsWithPolyline(forMapItem mapItem: MKMapItem) {
+        let request = MKDirectionsRequest()
+        request.source = MKMapItem.forCurrentLocation()
+        request.destination = mapItem
+        request.transportType = .automobile
+        let directions = MKDirections(request: request)
+        directions.calculate { (response, error) in
+            guard let response = response else {
+                print(error.debugDescription)
+                return
+            }
+            self.route = response.routes.first
+            self.mapView.add(self.route.polyline)
+        }
     }
 }
 extension HomeVC: UITextFieldDelegate {
@@ -315,6 +339,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         let selectedMapItem = matchingItems[indexPath.row]
         DataService.instance.REF_USERS.child(currentUserId!).updateChildValues(["tripCoordinate" : [selectedMapItem.placemark.coordinate.latitude, selectedMapItem.placemark.coordinate.longitude]])
         dropPin(placemark: selectedMapItem.placemark)
+        searchMapKitForResultsWithPolyline(forMapItem: selectedMapItem)
         animateTableView(shouldShow: false)
     }
     
