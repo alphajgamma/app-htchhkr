@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13526" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13528" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -189,6 +189,16 @@
                                     <constraint firstAttribute="height" constant="80" id="iq0-ew-7yf"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b4J-I4-da5">
+                                <rect key="frame" x="157" y="601" width="101" height="34"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
+                                <state key="normal" title="CANCEL TRIP">
+                                    <color key="titleColor" red="0.84705882349999995" green="0.2784313725" blue="0.1176470588" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelBtnWasPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Yfd-fj-nWD"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -197,9 +207,11 @@
                             <constraint firstItem="Dr9-C5-2lK" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="9yR-NR-6Xp"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="2pa-hf-z2w" secondAttribute="trailing" constant="16" id="AFc-j2-Ipm"/>
                             <constraint firstItem="Toe-Ez-W77" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="AGb-vV-c76"/>
+                            <constraint firstItem="b4J-I4-da5" firstAttribute="centerY" secondItem="nrG-sa-Nu8" secondAttribute="centerY" id="KOG-5w-Qak"/>
                             <constraint firstItem="Dr9-C5-2lK" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Kta-vs-vaJ"/>
                             <constraint firstItem="2pa-hf-z2w" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="Kxj-Xz-t05"/>
                             <constraint firstItem="Dr9-C5-2lK" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="NFd-w5-e8z"/>
+                            <constraint firstItem="b4J-I4-da5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="QSO-lM-OVs"/>
                             <constraint firstItem="2pa-hf-z2w" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="14" id="RkF-aY-rWI"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="nrG-sa-Nu8" secondAttribute="trailing" constant="16" id="TCh-eR-Ffq"/>
                             <constraint firstItem="TmN-6r-du1" firstAttribute="top" secondItem="2pa-hf-z2w" secondAttribute="bottom" constant="8" id="eWB-3Z-tzB"/>
@@ -215,6 +227,7 @@
                     </view>
                     <connections>
                         <outlet property="actionBtn" destination="AbN-t8-Dca" id="u6K-Sj-L9K"/>
+                        <outlet property="cancelBtn" destination="b4J-I4-da5" id="HeE-nR-WHQ"/>
                         <outlet property="centerMapBtn" destination="nrG-sa-Nu8" id="eY3-EB-yRD"/>
                         <outlet property="destinationCircle" destination="i54-7E-oNL" id="Wuc-5g-Afv"/>
                         <outlet property="destinationTxtField" destination="JkW-CW-TjC" id="q2R-9x-eSr"/>
