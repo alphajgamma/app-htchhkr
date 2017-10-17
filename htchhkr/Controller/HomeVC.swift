@@ -101,6 +101,28 @@ class HomeVC: UIViewController, Alertable {
                 }
             }
         })
+        
+        DataService.instance.REF_TRIPS.observe(.childRemoved, with: { (removedTripSnapshot) in
+            if let removedTripDict = removedTripSnapshot.value as? [String : Any] {
+                if removedTripDict["driverKey"] != nil {
+                    DataService.instance.REF_DRIVERS.child(removedTripDict["driverKey"] as! String).updateChildValues(["driverIsOnTrip" : false])
+                }
+                
+                DataService.instance.userIsDriver(userKey: self.currentUserId!, handler: { (isDriver) in
+                    if isDriver {
+                        // Remove overlays and annotations / Hide request ride button and cancel button
+                    } else {
+                        self.cancelBtn.fadeTo(alphaValue: 0.0, withDuration: 0.2)
+                        self.actionBtn.animateButton(shouldLoad: false, withMessage: "REQUEST RIDE")
+                        self.destinationTxtField.isUserInteractionEnabled = true
+                        self.destinationTxtField.text = ""
+                        
+                        // Remove overlays and annotations / Hide request ride button and cancel button
+                        self.centerMapOnUserLocation()
+                    }
+                })
+            }
+        })
     }
     
     func checkLocationAuthStatus() {
