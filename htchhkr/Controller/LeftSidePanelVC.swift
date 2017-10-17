@@ -48,13 +48,6 @@ class LeftSidePanelVC: UIViewController, Alertable {
             userImageView.isHidden = false
             loginOutBtn.setTitle("Logout", for: .normal)
         }
-        if self.UserAccountTypeLbl.text == "PASSENGER" {
-            pickupModeSwitch.isHidden = true
-            pickupModeLbl.isHidden = true
-        } else {
-            pickupModeSwitch.isHidden = false
-            pickupModeLbl.isHidden = false
-        }
     }
     
     func observePassengersAndDrivers() {
@@ -63,6 +56,8 @@ class LeftSidePanelVC: UIViewController, Alertable {
                 for snap in snapshot {
                     if snap.key == Auth.auth().currentUser?.uid {
                         self.UserAccountTypeLbl.text = "PASSENGER"
+                        self.pickupModeSwitch.isHidden = true
+                        self.pickupModeLbl.isHidden = true
                     }
                 }
             }
