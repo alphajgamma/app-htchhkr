@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import Firebase
 
 class PickupVC: UIViewController {
     
@@ -18,6 +19,7 @@ class PickupVC: UIViewController {
     let regionRadius: CLLocationDistance = 2000
     var pin: MKPlacemark? = nil
     var pickupCoordinate: CLLocationCoordinate2D!
+    var currentUserId = Auth.auth().currentUser?.uid
     var passengerKey: String!
     var locationPlacemark: MKPlacemark!
 
@@ -28,6 +30,16 @@ class PickupVC: UIViewController {
         locationPlacemark = MKPlacemark(coordinate: pickupCoordinate)
         dropPinFor(placemark: locationPlacemark)
         centerMapOnLocation(location: locationPlacemark.location!)
+        
+        DataService.instance.REF_TRIPS.child(passengerKey).observe(.value, with: { (tripSnapshot) in
+            if tripSnapshot.exists() {
+                if tripSnapshot.childSnapshot(forPath: "tripIsAccepted").value as? Bool == true {
+                    self.dismiss(animated: true, completion: nil)
+                }
+            } else {
+                self.dismiss(animated: true, completion: nil)
+            }
+        })
     }
     
     func initData(coordinate: CLLocationCoordinate2D, passengerKey: String) {
@@ -36,7 +48,8 @@ class PickupVC: UIViewController {
     }
 
     @IBAction func acceptTripBtnWasPressed(_ sender: Any) {
-        
+        UpdateService.instance.acceptTrip(withPassengerKey: passengerKey, forDriverKey: currentUserId!)
+        presentingViewController?.shouldPresentLoadingView(true)
     }
     
     @IBAction func cancelBtnWasPressed(_ sender: Any) {
