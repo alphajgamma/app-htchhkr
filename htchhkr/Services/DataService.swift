@@ -38,4 +38,51 @@ class DataService {
             }
         })
     }
+    
+    func driverIsOnTrip(driverKey: String, handler: @escaping(_ status: Bool?, _ driverKey: String?, _ tripKey: String?) -> Void) {
+        DataService.instance.REF_DRIVERS.child(driverKey).child("driverIsOnTrip").observe(.value, with: { (driverTripStatusSnapshot) in
+            if let driverTripStatusSnapshot = driverTripStatusSnapshot.value as? Bool {
+                if driverTripStatusSnapshot == true {
+                    DataService.instance.REF_TRIPS.observeSingleEvent(of: .value, with: { (tripSnapshot) in
+                        if let tripSnapshot = tripSnapshot.children.allObjects as? [DataSnapshot] {
+                            for trip in tripSnapshot {
+                                if trip.childSnapshot(forPath: "driverKey").value as? String == driverKey {
+                                    handler(true, driverKey, trip.key)
+                                } else {
+                                    return
+                                }
+                            }
+                        }
+                    })
+                } else {
+                    handler(false, nil, nil)
+                }
+            }
+        })
+    }
+    
+    func userIsOnTrip(passengerKey: String, handler: @escaping(_ status: Bool?, _ driverKey: String?, _ tripKey: String?) -> Void) {
+        DataService.instance.REF_TRIPS.child(passengerKey).observeSingleEvent(of: .value, with: { (tripSnapshot) in
+            if tripSnapshot.exists() {
+                if tripSnapshot.childSnapshot(forPath: "tripIsAccepted").value as? Bool == true {
+                    let driverKey = tripSnapshot.childSnapshot(forPath: "driverKey").value as? String
+                    handler(true, driverKey, passengerKey)
+                } else {
+                    handler(false, nil, nil)
+                }
+            } else {
+                handler(false, nil, nil)
+            }
+        })
+    }
+    
+    func userIsDriver(userKey: String, handler: @escaping(_ status: Bool) -> Void) {
+        DataService.instance.REF_DRIVERS.child(userKey).observeSingleEvent(of: .value, with: { (driverSnapshot) in
+            if driverSnapshot.exists() {
+                handler(true)
+            } else {
+                handler(false)
+            }
+        })
+    }
 }
