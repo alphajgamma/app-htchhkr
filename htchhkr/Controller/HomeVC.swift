@@ -88,28 +88,6 @@ class HomeVC: UIViewController, Alertable {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        DataService.instance.driverIsAvailable(key: currentUserId!, handler: { (available) in
-            if let available = available {
-                if !available {
-                    DataService.instance.REF_TRIPS.observeSingleEvent(of: .value, with: { (tripSnapshot) in
-                        if let tripSnapshot = tripSnapshot.children.allObjects as? [DataSnapshot] {
-                            for trip in tripSnapshot {
-                                if trip.childSnapshot(forPath: "driverKey").value as? String == self.currentUserId! {
-                                    let pickupCoordinateArray = trip.childSnapshot(forPath: "pickupCoordinate").value as! NSArray
-                                    let pickupCoordinate = CLLocationCoordinate2D(latitude: pickupCoordinateArray.firstObject as! CLLocationDegrees, longitude: pickupCoordinateArray.lastObject as! CLLocationDegrees)
-                                    let pickupPlacemark = MKPlacemark(coordinate: pickupCoordinate)
-                                    self.dropPin(placemark: pickupPlacemark)
-                                    self.searchMapKitForResultsWithPolyline(forOriginMapItem: nil, withDestinationMapItem: MKMapItem(placemark: pickupPlacemark))
-                                }
-                            }
-                        }
-                    })
-                }
-            }
-        })
-        
-        connectUserAndDriverForTrip()
-        
         DataService.instance.REF_TRIPS.observe(.childRemoved, with: { (removedTripSnapshot) in
             if let removedTripDict = removedTripSnapshot.value as? [String : Any] {
                 if removedTripDict["driverKey"] != nil {
@@ -131,6 +109,26 @@ class HomeVC: UIViewController, Alertable {
                 })
             }
         })
+        
+        DataService.instance.driverIsOnTrip(driverKey: currentUserId!, handler: { (isOnTrip, driverKey, tripKey) in
+            if isOnTrip == true {
+                DataService.instance.REF_TRIPS.observeSingleEvent(of: .value, with: { (tripSnapshot) in
+                    if let tripSnapshot = tripSnapshot.children.allObjects as? [DataSnapshot] {
+                        for trip in tripSnapshot {
+                            if trip.childSnapshot(forPath: "driverKey").value as? String == self.currentUserId! {
+                                let pickupCoordinateArray = trip.childSnapshot(forPath: "pickupCoordinate").value as! NSArray
+                                let pickupCoordinate = CLLocationCoordinate2D(latitude: pickupCoordinateArray.firstObject as! CLLocationDegrees, longitude: pickupCoordinateArray.lastObject as! CLLocationDegrees)
+                                let pickupPlacemark = MKPlacemark(coordinate: pickupCoordinate)
+                                self.dropPin(placemark: pickupPlacemark)
+                                self.searchMapKitForResultsWithPolyline(forOriginMapItem: nil, withDestinationMapItem: MKMapItem(placemark: pickupPlacemark))
+                            }
+                        }
+                    }
+                })
+            }
+        })
+        
+        connectUserAndDriverForTrip()
     }
     
     func checkLocationAuthStatus() {
@@ -337,7 +335,6 @@ extension HomeVC: MKMapViewDelegate {
         lineRenderer.strokeColor = #colorLiteral(red: 0.884881556, green: 0.3655636609, blue: 0.1510630548, alpha: 1)
         lineRenderer.lineWidth = 3
         shouldPresentLoadingView(false)
-        zoom(toFitAnnotationsFromMapView: self.mapView, forActiveTripWithDriver: false, withKey: nil)
         return lineRenderer
     }
     
@@ -400,6 +397,9 @@ extension HomeVC: MKMapViewDelegate {
             if self.mapView.overlays.count == 0 {
                 self.mapView.add(self.route.polyline)
             }
+            
+            self.zoom(toFitAnnotationsFromMapView: self.mapView, forActiveTripWithDriver: false, withKey: nil)
+            
             let delegate = AppDelegate.getAppDelegate()
             delegate.window?.rootViewController?.shouldPresentLoadingView(false)
         }
