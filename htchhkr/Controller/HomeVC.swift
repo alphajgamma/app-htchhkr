@@ -358,9 +358,26 @@ class HomeVC: UIViewController, Alertable {
                 }
             })
         case .getDirectionsToDestination:
-            print("Get directions to destination selected")
+            DataService.instance.driverIsOnTrip(driverKey: currentUserId!, handler: { (isOnTrip, driverKey, tripKey) in
+                if isOnTrip == true {
+                    DataService.instance.REF_TRIPS.child(tripKey!).child("destinationCoordinate").observeSingleEvent(of: .value, with: { (coordinateSnapshot) in
+                        if let destinationCoordinateArray = coordinateSnapshot.value as? NSArray {
+                            let destinationCoordinate = CLLocationCoordinate2D(latitude: destinationCoordinateArray.firstObject as! CLLocationDegrees, longitude: destinationCoordinateArray.lastObject as! CLLocationDegrees)
+                            let destinationPlacemark = MKPlacemark(coordinate: destinationCoordinate)
+                            let destinationMapItem = MKMapItem(placemark: destinationPlacemark)
+                            destinationMapItem.name = "Passenger Destination"
+                            destinationMapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
+                        }
+                    })
+                }
+            })
         case .endTrip:
-            print("End trip selected")
+            DataService.instance.driverIsOnTrip(driverKey: currentUserId!, handler: { (isOnTrip, driverKey, tripKey) in
+                if isOnTrip == true {
+                    UpdateService.instance.cancelTrip(withPassengerKey: tripKey!, forDriverKey: driverKey!)
+                    self.buttonsForDriver(areHidden: true)
+                }
+            })
         }
     }
 }
@@ -378,13 +395,13 @@ extension HomeVC: CLLocationManagerDelegate {
         DataService.instance.driverIsOnTrip(driverKey: currentUserId!, handler: { (isOnTrip, driverKey, tripKey) in
             if isOnTrip == true {
                 if region.identifier == "pickup" {
-                    self.actionBtn.setTitle("START TRIP", for: .normal)
                     self.actionForButton = .startTrip
+                    self.actionBtn.setTitle("START TRIP", for: .normal)
                 } else if region.identifier == "destination" {
                     self.cancelBtn.fadeTo(alphaValue: 0.0, withDuration: 0.2)
                     self.cancelBtn.isHidden = true
-                    self.actionBtn.setTitle("END TRIP", for: .normal)
                     self.actionForButton = .endTrip
+                    self.actionBtn.setTitle("END TRIP", for: .normal)
                 }
             }
         })
@@ -528,9 +545,7 @@ extension HomeVC: MKMapViewDelegate {
                 return
             }
             self.route = response.routes.first
-            if self.mapView.overlays.count == 0 {
-                self.mapView.add(self.route.polyline)
-            }
+            self.mapView.add(self.route.polyline)
             
             self.zoom(toFitAnnotationsFromMapView: self.mapView, forActiveTripWithDriver: false, withKey: nil)
             
