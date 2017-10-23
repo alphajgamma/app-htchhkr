@@ -234,7 +234,15 @@ class HomeVC: UIViewController, Alertable {
             if status == false {
                 DataService.instance.REF_TRIPS.child(self.currentUserId!).observe(.value, with: { (tripSnapshot) in
                     if let tripDict = tripSnapshot.value as? [String : Any] {
-                        if tripDict["tripIsAccepted"] as? Bool == true {
+                        if tripDict["tripIsInProgress"] as? Bool == true {
+                            self.removeOverlaysAndAnnotations(forDrivers: true, forPassengers: true)
+                            let destinationCoordinateArray = tripDict["destinationCoordinate"] as! NSArray
+                            let desinationCoordinate = CLLocationCoordinate2D(latitude: destinationCoordinateArray.firstObject as! CLLocationDegrees, longitude: destinationCoordinateArray.lastObject as! CLLocationDegrees)
+                            let destinationPlacemark = MKPlacemark(coordinate: desinationCoordinate)
+                            self.dropPin(placemark: destinationPlacemark)
+                            self.searchMapKitForResultsWithPolyline(forOriginMapItem: nil, withDestinationMapItem: MKMapItem(placemark: destinationPlacemark))
+                            self.actionBtn.setTitle("ON TRIP", for: .normal)
+                        } else if tripDict["tripIsAccepted"] as? Bool == true {
                             self.removeOverlaysAndAnnotations(forDrivers: true, forPassengers: true)
                             let driverId = tripDict["driverKey"] as! String
                             let pickupCoordinateArray = tripDict["pickupCoordinate"] as! NSArray
@@ -332,7 +340,23 @@ class HomeVC: UIViewController, Alertable {
                 }
             })
         case .startTrip:
-            print("Start trip selected")
+            DataService.instance.driverIsOnTrip(driverKey: currentUserId!, handler: { (isOnTrip, driverKey, tripKey) in
+                if isOnTrip == true {
+                    self.removeOverlaysAndAnnotations(forDrivers: false, forPassengers: false)
+                    DataService.instance.REF_TRIPS.child(tripKey!).updateChildValues(["tripIsInProgress" : true])
+                    DataService.instance.REF_TRIPS.child(tripKey!).child("destinationCoordinate").observeSingleEvent(of: .value, with: { (coordinateSnapshot) in
+                        if let destinationCoordinateArray = coordinateSnapshot.value as? NSArray {
+                            let destinationCoordinate = CLLocationCoordinate2D(latitude: destinationCoordinateArray.firstObject as! CLLocationDegrees, longitude: destinationCoordinateArray.lastObject as! CLLocationDegrees)
+                            let destinationPlacemark = MKPlacemark(coordinate: destinationCoordinate)
+                            self.dropPin(placemark: destinationPlacemark)
+                            self.searchMapKitForResultsWithPolyline(forOriginMapItem: nil, withDestinationMapItem: MKMapItem(placemark: destinationPlacemark))
+                            self.setCustomRegion(ForAnnotationType: .destination, withCoordinate: destinationCoordinate)
+                            self.actionForButton = .getDirectionsToDestination
+                            self.actionBtn.setTitle("GET DIRECTIONS", for: .normal)
+                        }
+                    })
+                }
+            })
         case .getDirectionsToDestination:
             print("Get directions to destination selected")
         case .endTrip:
@@ -355,10 +379,12 @@ extension HomeVC: CLLocationManagerDelegate {
             if isOnTrip == true {
                 if region.identifier == "pickup" {
                     self.actionBtn.setTitle("START TRIP", for: .normal)
+                    self.actionForButton = .startTrip
                 } else if region.identifier == "destination" {
                     self.cancelBtn.fadeTo(alphaValue: 0.0, withDuration: 0.2)
                     self.cancelBtn.isHidden = true
                     self.actionBtn.setTitle("END TRIP", for: .normal)
+                    self.actionForButton = .endTrip
                 }
             }
         })
@@ -369,10 +395,12 @@ extension HomeVC: CLLocationManagerDelegate {
             if isOnTrip == true {
                 if region.identifier == "pickup" {
                     self.actionBtn.setTitle("GET DIRECTIONS", for: .normal)
+                    self.actionForButton = .getDirectionsToPassenger
                 } else if region.identifier == "destination" {
                     self.cancelBtn.fadeTo(alphaValue: 0.0, withDuration: 0.2)
                     self.cancelBtn.isHidden = true
                     self.actionBtn.setTitle("GET DIRECTIONS", for: .normal)
+                    self.actionForButton = .getDirectionsToDestination
                 }
             }
         })
