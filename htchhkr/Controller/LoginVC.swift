@@ -44,28 +44,26 @@ class LoginVC: UIViewController, UITextFieldDelegate, Alertable {
                             case .userNotFound:
                                 Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
                                     if let error = error {
-                                        self.showAlert(withTitle: "Authentication Error", andMessage: error.localizedDescription)
+                                        self.showAlert(withTitle: ERROR_MSG_TITLE_AUTHENTICATION, andMessage: error.localizedDescription)
                                     } else {
                                         if let user = user {
                                             if self.segmentedControl.selectedSegmentIndex == 0 {
-                                                let userData = ["provider" : user.providerID] as [String : Any]
+                                                let userData = [ACCOUNT_PROVIDER : user.providerID] as [String : Any]
                                                 DataService.instance.createFirebaseDBUser(uid: user.uid, userData: userData, isDriver: false)
                                             } else {
-                                                let userData = ["provider" : user.providerID, "userIsDriver" : true, "isPickupModeEnabled" : false, "driverIsOnTrip" : false] as [String : Any]
+                                                let userData = [ACCOUNT_PROVIDER : user.providerID, USER_IS_DRIVER : true, ACCOUNT_PICKUP_MODE_ENABLED : false, DRIVER_IS_ON_TRIP : false] as [String : Any]
                                                 DataService.instance.createFirebaseDBUser(uid: user.uid, userData: userData, isDriver: true)
                                             }
                                         }
-                                        print("Successfully created a new email auth user in Firebase")
                                         self.dismiss(animated: true, completion: nil)
                                     }
                                 })
                             default:
-                                self.showAlert(withTitle: "Authentication Error", andMessage: error.localizedDescription)
+                                self.showAlert(withTitle: ERROR_MSG_TITLE_AUTHENTICATION, andMessage: error.localizedDescription)
                             }
                         }
                     } else {
                         if user != nil {
-                            print("Email user authenticated successfully in Firebase")
                             self.dismiss(animated: true, completion: nil)
                         }
                     }

@@ -33,7 +33,7 @@ class PickupVC: UIViewController {
         
         DataService.instance.REF_TRIPS.child(passengerKey).observe(.value, with: { (tripSnapshot) in
             if tripSnapshot.exists() {
-                if tripSnapshot.childSnapshot(forPath: "tripIsAccepted").value as? Bool == true {
+                if tripSnapshot.childSnapshot(forPath: TRIP_IS_ACCEPTED).value as? Bool == true {
                     self.dismiss(animated: true, completion: nil)
                 }
             } else {
@@ -59,14 +59,14 @@ class PickupVC: UIViewController {
 extension PickupVC: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let identifier = "pickupPoint"
+        let identifier = ANNO_DESTINATION_IDENTIFIER
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
         if annotationView == nil {
             annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
         } else {
             annotationView?.annotation = annotation
         }
-        annotationView?.image = UIImage(named: "destinationAnnotation")
+        annotationView?.image = UIImage(named: ANNO_DESTINATION)
         return annotationView
     }
     
